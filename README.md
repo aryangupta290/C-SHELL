@@ -1,4 +1,10 @@
-This shell is designed for Assignment 2 of Operating System course:
+## How to run shell:
+
+a) The makefile will compile the code.
+
+b) Run 'make' and it will create an executable for us.
+
+c) Run './shell' to run the shell.
 
 ## Division of code:
 
@@ -82,11 +88,3 @@ Shell_directory
 |_________run.c
 |_________sig.c
 ```
-
-## How to run shell:
-
-a) The makefile will compile the code.
-
-b) Run 'make' and it will create an executable for us.
-
-c) Run './shell' to run the shell.
