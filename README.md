@@ -1,62 +1,170 @@
-## How to run shell:
+## SETUP:
 
-a) The makefile will compile the code.
+```
+$ make
+$ ./shell
+```
 
-b) Run 'make' and it will create an executable for us.
+## Features
 
-c) Run './shell' to run the shell.
 
-## Division of code:
 
-a) The entire shell is divided into several modular files.
+* `cd`: Changes the working directory of the shell.
+```bash
+cd
+cd - # To go to the previous working directory
+cd ~
+cd ../..
+cd dir_1/dir_2/dir_3
+```
 
-b) header.h contains all the function declerations and global variables along with all the essential header files.
+* `echo`: Prints the text following "echo" on the terminal.
+```bash
+echo "Hello World"
+echo Welcome to ASH
+```
 
-c) Then there are 12 other files including main.c and all the other files for the individual commands and functionalities. 
-Features:
+* `ls`: Lists the contents of a particular directory.
+```bash
+ls
+ls -a
+ls -l
+ls -al
+ls -la
+ls -a -l
+ls -l -a
+ls ../../dir_1/dir_2
+ls ~
+ls dir_1/file_name
+```
+
+* `pinfo`: Displays information about a particular process.
+```bash
+pinfo # Displays information about the shell process itself
+pinfo <pid>
+```
+
+* `fg`: Brings the running/stopped background job to the foreground.
+```bash
+fg <job_number>
+```
+
+* `bg`: Changes the state of a stopped background job to running.
+```bash
+bg <job_number>
+```
+
+
+* `pwd`: Prints the absolute path of the current working directory.
+```bash
+pwd
+```
+* `jobs`: Prints a list of all currently running background processes spawned by the shell in alphabetical order of the command name, along with
+the job number, process ID and the state.
+```bash
+jobs
+jobs -s
+jobs -r
+jobs -rs
+jobs -s -r
+```
+
+* `history`: Displays a list of the commands previously used (at most the 20 latest commands).
+```bash
+history
+history <n> # To display last n commands used
+```
+
+* `baywatch`: A modified version of the bash command watch, that works for three specific commands: <br>
+
+  * <b>interrupt:</b> Prints the number of times the CPUs have been interrupted by the keyboard controller (i8042 with IRQ 1)
+
+  * <b>newborn:</b> Prints the PID of the most recently created process.
+
+  * <b>dirty:</b> Prints the size of the part of memory that is dirty.
+```bash
+baywatch -n <interval> interrupt
+baywatch -n <interval> newborn
+baywatch -n <interval> dirty
+```
+
+Press <kbd>Q</kbd> to terminate the command.
+
+* `repeat`: Executes a given command n times.
+```bash
+repeat <n> <command>
+```
+
+* `replay`: Executes a particular command in fixed time interval for a certain period.
+```bash
+replay -command <command> -interval <interval> -period <period>
+```
+
+* `sig`: Sends the signal corresponding to signal number​ to the process with the particular job number.
+```
+sig <job_number> <signal_number>
+```
+
+* <b>System Commands: </b>ASH should run many of the processes that bash can, including `gedit`, `vim`, `clear`, etc.
+```bash
+gedit
+vim
+clear
+ps
+```
+
+* <b>Background Processes: </b>Add `&` at the end of the command to run it as a background process. This however only works for system commands, and not shell built-ins.
+```bash
+gedit &
+```
+
+* <b>Arrow Keys: </b>Acts as a shortcut to easily view previous commands, and execute them, just like in bash.<br>
+<kbd>UP</kbd> - View earlier commands<br>
+<kbd>DOWN</kbd> - View more recent commands
+
 
 ## Assumptions:
 
-a) History will only be shown for at max 20 files.
+* History will only be shown for at max 20 files.  
 
-b) For the ls command , if -l is given as a flag then if the file was modified before 6 months (i.e some day which is 6 months before the current date) then year would be shown else time.
+* For the ls command , if -l is given as a flag then if the file was modified before 6 months (i.e some day which is 6 months before the current date) then year would be shown else time.  
 
-c) The commands like ls,cd,pwd,echo,pinfo cannot be used as background commands.
+* The commands like ls,cd,pwd,echo,pinfo cannot be used as background commands.  
 
-d) The shell's home will be the directory from where it was excited.
+* The shell's home will be the directory from where it was excited.  
 
-e) The file for storing history will be created in the same directory from where shell was invoked.
+* The file for storing history will be created in the same directory from where shell was invoked.  
 
-f) In redirection , for input-output at max only one file will be given
+* In redirection , for input-output at max only one file will be given.  
 
-g) For < redirection , the last word would be cosidered as file before EOF or another redirection operator.
- h) For > and >> , the immidiate next word would be considered for redirection.
+* For < redirection , the last word would be cosidered as file before EOF or another redirection operator.  
+* For > and >> , the immidiate next word would be considered for redirection.  
 
-## Files:
+## File Strcuture
 
-a) main.c -> Contains all initializations,signal handling,input reading,function calling
+* main.c -> Contains all initializations,signal handling,input reading,function calling
 
-b) prompt.c -> Used for printing prompt
+* prompt.c -> Used for printing prompt
 
-c) background.c -> Handles the execution of background processes.
+* background.c -> Handles the execution of background processes.
 
-d) cd.c -> Handles the execution of cd command . Can handle normal cd usage along with .,..,-,~.
+* cd.c -> Handles the execution of cd command . Can handle normal cd usage along with .,..,-,~.
 
-e) pwd.c -> Does the normal functioning of pwd
+* pwd.c -> Does the normal functioning of pwd
 
-f) echo.c -> Does the Does the normal functioning of echo but does not treat {",'} specially.
+* echo.c -> Does the Does the normal functioning of echo but does not treat {",'} specially.
 
-g) ls.c -> Does normal functioning along with the -l and -a flags and it can also handle multiple directories and files.
+* ls.c -> Does normal functioning along with the -l and -a flags and it can also handle multiple directories and files.
 
-h) foreground.c -> Handles the execution of foreground processes.
+* foreground.c -> Handles the execution of foreground processes.
 
-i) job_handling.c -> Handles the storing of background commands.
+* job_handling.c -> Handles the storing of background commands.
 
-j) pinfo.c -> Prints info of the shell process else of the process id given as argument . A '+' is added if process is foreground.
+* pinfo.c -> Prints info of the shell process else of the process id given as argument . A '+' is added if process is foreground.
 
-k) signal_history.c -> For printing status when background processes finished.
+* signal_history.c -> For printing status when background processes finished.
 
-l) history.c -> For printing history of previous commands . Can also handle the commands which were run in prevoius sessions.
+* history.c -> For printing history of previous commands . Can also handle the commands which were run in prevoius sessions.
 
 ## Signal handling:
 
